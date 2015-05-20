@@ -20,6 +20,8 @@ void setup() {
   tick = millis();
   last_pos = analogRead(A1);
   x = last_pos;
+  
+  MotorA.init();
 
 }
 
@@ -33,13 +35,21 @@ void loop() {
     
     int diff_center = (512 - current_pos);
     
-    f = k * (diff_center - x) - (d * v);
+    f = (k * (diff_center - x)) - (d * v);
     v += (f / m) * dt;
-    x += v * dt;
+    x += (v * dt);
     
     tick = millis();
     
     MotorA.torque(f);
+    
+    if (c % 15 == 0) {
+      Serial.println(f);
+      Serial.println(v);
+      Serial.println(x);
+      Serial.println("---------");
+    }
+    
   }
 
 }
